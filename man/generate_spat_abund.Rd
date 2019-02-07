@@ -2,23 +2,26 @@
 % Please edit documentation in R/generate_spat_abund.R
 \name{generate_spat_abund}
 \alias{generate_spat_abund}
-\title{Generate neutral community}
+\title{Generate a neutral community}
 \usage{
 generate_spat_abund(theta, Ivec, Jvec)
 }
 \arguments{
-\item{theta}{a number}
+\item{theta}{an integer that gives a value to Theta}
 
-\item{Ivec}{a vector}
+\item{Ivec}{a vector of I values}
 
-\item{Jvec}{a vector}
+\item{Jvec}{a vector of J values}
 }
 \value{
 a vector of species abundances
 }
 \description{
-Generate neutral community
+Generate a neutral community
 }
 \examples{
 generate_spat_abund(theta = 200,Ivec = rep(40,1),Jvec = c(16000))
+}
+\author{
+Etienne et al. 2007 (Ecology Letters)
 }
