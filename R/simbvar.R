@@ -16,9 +16,9 @@
 #' @export
 #'
 #' @examples
-#' simkvar( 100, 0.6, 0.1, 16000, 0.05,0, 20, generate_spat_abund(theta = 200,Ivec = rep(40,1),Jvec = c(16000)), 200)
+#' simbvar( 100, 0.6, 0.1, 16000, 0.05,0, 20, generate_spat_abund(theta = 200,Ivec = rep(40,1),Jvec = c(16000)), 200)
 #'
-simkvar = function ( tmax, b1, d1, k1, bneck,kneckstart, kneckend, abun_original, interval){
+simbvar = function ( tmax, b1, d1, k1, bneck,kneckstart, kneckend, abun_original, interval){
   print(Sys.time())
   nspec=length(abun_original) #Determine number of species in input community
   bn=c(rep(b1,nspec)) #vector of birthrates
