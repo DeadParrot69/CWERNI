@@ -1,8 +1,8 @@
-#' Generate neutral community
-#'
-#' @param theta a number
-#' @param Ivec  a vector
-#' @param Jvec  a vector
+#' Generate a neutral community
+#'@author Etienne et al. 2007 (Ecology Letters)
+#' @param theta an integer that gives a value to Theta
+#' @param Ivec  a vector of I values
+#' @param Jvec  a vector of J values
 #'
 #' @return a vector of species abundances
 #' @export
@@ -59,3 +59,7 @@ generate_spat_abund = function(theta,Ivec,Jvec)
   abund = abund[1:numsam,1:numspec]
   return(abund)
 }
+
+
+
+
