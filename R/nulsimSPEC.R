@@ -1,5 +1,8 @@
 
-#' Simple Neutral community (SN)
+
+
+
+#' Simple Neutral community (SN) saving certain precise timepoints
 #'
 #' @param tmax Arbitrary units of time the simulation should be run
 #' @param b1 Birthrate
@@ -7,16 +10,20 @@
 #' @param k1 Carrying capacity
 #' @param abun_original A vector of initial abundances for each species such as those created by generate_spat_abund
 #' @param interval After how many evenst should the population state be saved to the output matrix
+#' @param wantedtimes The specific timepoints that should be included in the final matrix
 #' @author Timo van Eldijk
 #'
-#' @return A matrix denoting the abundances of all the species in the community over time
+#' @return A matrix denoting the abundances of all the species in the community over time, with certain precise timepoints saved (wantedtimes)
 #' @export
 #'
 #' @examples
-#'nulsim(10, 0.6, 0.1, 16000, generate_spat_abund(theta = 200,Ivec = rep(40,1),Jvec = c(16000)), 200)
+#'nulsimSPEC(10, 0.6, 0.1, 16000, generate_spat_abund(theta = 200,Ivec = rep(40,1),
+#'Jvec = c(16000)), 200, c(15,30,50,75,100))
 #'
-#'
-nulsim = function (tmax, b1, d1, k1, abun_original, interval) {
+
+
+nulsimSPEC = function (tmax, b1, d1, k1, abun_original, interval, wantedtimes) {
+  wantedtimescounter=1
   print(Sys.time())
   nspec = length (abun_original) #Determine number of species in input community
   b=c(rep(b1,nspec))            #Vector of birth rates (this is so function can be rewritten to accept vector)
@@ -63,17 +70,32 @@ nulsim = function (tmax, b1, d1, k1, abun_original, interval) {
     }
 
 
+
+
+
     totpopimpact = sum(pop[, 2])/k #sample the time to the next event
     probo = (max(0,(b*(1-totpopimpact))) + d) * pop[, 2]
     timetoevent = stats::rexp(1, (sum(probo)))
     tminone=t
     t = t + timetoevent
     saver = saver + 1
+
+    if (t>wantedtimes[wantedtimescounter] && wantedtimescounter<=length(wantedtimes)){
+
+      keep=c(tminone,pop[,2]) #store abundances
+      keeper=rbind (keeper, keep)
+      print (c(tminone,t,"WANTED"))
+      wantedtimescounter=wantedtimescounter+1
+
+    }
+
+
   }
 
-  keep = c(tminone, pop[, 2]) #store abundances for last timepoint before 100 (so what it was exactly at 100)
-  keeper = rbind (keeper, keep)#put them in dataframe
-
+  if (tmax!=wantedtimes[length(wantedtimes)]){
+    keep = c(tminone, pop[, 2]) #store abundances for last timepoint before 100 (so what it was exactly at 100)
+    keeper = rbind (keeper, keep)#put them in dataframe
+  }
 
   return(t(keeper))
 }

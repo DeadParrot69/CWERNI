@@ -1,6 +1,6 @@
 
 
-#' Simulate a neutral community with a variable birthrate (VBN)
+#' Simulate a neutral community with a variable birthrate (VBN), saving certain precise timepoints
 #'
 #' @param tmax Arbitrary units of time the simulation should be run
 #' @param b1 Normal birthrate
@@ -11,15 +11,19 @@
 #' @param kneckend  Timepoint at which the bottleneck ends
 #' @param abun_original A vector of initial abundances for each species such as those created by generate_spat_abund
 #' @param interval After how many evenst should the population state be saved to the output matrix
+#' @param wantedtimes The specific timepoints that should be included in the final matrix
 #'@author Timo van Eldijk
-#' @return A matrix denoting the abundances of all the species in the community over time
+#' @return A matrix denoting the abundances of all the species in the community over time, with certain specific timepoints saved (wantedtimes)
 #' @export
 #'
 #' @examples
-#' simbvar( 10, 0.6, 0.1, 16000, 0.05,0, 20,
-#' generate_spat_abund(theta = 200,Ivec = rep(40,1),Jvec = c(16000)), 200)
+#' simbvarSPEC( 10, 0.6, 0.1, 16000, 0.05,0, 20,
+#' generate_spat_abund(theta = 200,Ivec = rep(40,1),Jvec = c(16000)),
+#' 200,c(15,30,50,75,100))
 #'
-simbvar = function ( tmax, b1, d1, k1, bneck,kneckstart, kneckend, abun_original, interval){
+
+simbvarSPEC = function ( tmax, b1, d1, k1, bneck,kneckstart, kneckend, abun_original, interval, wantedtimes){
+  wantedtimescounter=1
   print(Sys.time())
   nspec=length(abun_original) #Determine number of species in input community
   bn=c(rep(b1,nspec)) #vector of birthrates
@@ -76,10 +80,25 @@ simbvar = function ( tmax, b1, d1, k1, bneck,kneckstart, kneckend, abun_original
     tminone=t
     t=t+timetoevent
     saver=saver+1
-  }
-  keep=c(tminone,pop[,2]) #store abundances
-  keeper=rbind (keeper, keep)#put them in dataframe
 
+    if (t>wantedtimes[wantedtimescounter] && wantedtimescounter<=length(wantedtimes)){
+
+      keep=c(tminone,pop[,2]) #store abundances
+      keeper=rbind (keeper, keep)
+      print (c(tminone,t,"WANTED"))
+      wantedtimescounter=wantedtimescounter+1
+
+    }
+
+
+  }
+
+
+
+  if (tmax!=wantedtimes[length(wantedtimes)]){
+    keep=c(tminone,pop[,2]) #store abundances
+    keeper=rbind (keeper, keep)#put them in dataframe
+  }
   return(t(keeper))
 }
 
