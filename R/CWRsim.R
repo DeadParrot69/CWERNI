@@ -19,7 +19,8 @@
 #' @export
 #'
 #' @examples
-#' CWRsim(100,0.6 , 0.1, 0.05, 0.1, 0, 0.0005, 16000, generate_spat_abund(theta = 200,Ivec = rep(40,1),Jvec = c(16000)), 200)
+#' CWRsim(10,0.6 , 0.1, 0.05, 0.1, 0, 0.0005, 16000,
+#' generate_spat_abund(theta = 200,Ivec = rep(40,1),Jvec = c(16000)), 200)
 #'
 CWRsim = function (tmax, b1, d1, b2, d2, m12, m21, k1, abun_original, interval){
 
