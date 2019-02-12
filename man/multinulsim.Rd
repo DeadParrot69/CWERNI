@@ -19,7 +19,7 @@ multinulsim(tmax, b1, d1, k1, abun_original, nsim, filenomen, interval)
 
 \item{nsim}{number of simulations that should be performed (integer)}
 
-\item{filenomen}{the name of the}
+\item{filenomen}{the name of the plot that is saved}
 
 \item{interval}{After how many evenst should the population state be saved to the output matrix}
 }
@@ -30,7 +30,9 @@ this function plots all the results of the simulations in a .tiff file in the cu
 Multiple Simple Neutral community (SN) simulations
 }
 \examples{
-multinulsim(100, 0.6, 0.1, 16000, generate_spat_abund(theta = 200,Ivec = rep(40,1),Jvec = c(16000)),5,"nulsim.tiff",  200)
+multinulsim(10, 0.6, 0.1, 16000,
+generate_spat_abund(theta = 200,Ivec = rep(40,1),Jvec = c(16000)),
+2,"nulsim.tiff",  200)
 
 
 

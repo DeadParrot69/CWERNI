@@ -26,7 +26,7 @@ A matrix denoting the abundances of all the species in the community over time
 Simple Neutral community (SN)
 }
 \examples{
-nulsim(100, 0.6, 0.1, 16000, generate_spat_abund(theta = 200,Ivec = rep(40,1),Jvec = c(16000)), 200)
+nulsim(10, 0.6, 0.1, 16000, generate_spat_abund(theta = 200,Ivec = rep(40,1),Jvec = c(16000)), 200)
 
 
 }
