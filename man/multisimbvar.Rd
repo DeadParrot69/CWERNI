@@ -37,7 +37,7 @@ this function plots all the results of the simulations in a .tiff file in the cu
 Simulate multiple neutral communities with a variable birthrate (VBN)
 }
 \examples{
-multisimbvar( 10, 0.6, 0.1, 16000, 0.05,0, 20,
+multisimbvar( 10, 0.6, 0.1, 16000, 0.05,0, 5,
 generate_spat_abund (theta = 200,Ivec = rep(40,1),Jvec = c(16000)),
 2, "bvar.tiff", 200)
 

@@ -2,7 +2,7 @@
 % Please edit documentation in R/multinulsimSPEC.R
 \name{multinulsimSPEC}
 \alias{multinulsimSPEC}
-\title{Multiple Simple Neutral community (SN) simulations, plotting the RAC at specific timepoints}
+\title{Multiple Simple Neutral community (SN) simulations, plotting the RAC at specific timepoints and also saving the output matrix for every simulation}
 \usage{
 multinulsimSPEC(tmax, b1, d1, k1, abun_original, nsim, interval,
   wantedtimes)
@@ -28,7 +28,7 @@ multinulsimSPEC(tmax, b1, d1, k1, abun_original, nsim, interval,
 this function plots the RAC of the simulations for the times specified in Wantedtimes as .tiff files in the current working directory also writes a .csv file outputting the poplation matrix for every simulation performed
 }
 \description{
-Multiple Simple Neutral community (SN) simulations, plotting the RAC at specific timepoints
+Multiple Simple Neutral community (SN) simulations, plotting the RAC at specific timepoints and also saving the output matrix for every simulation
 }
 \examples{
 multinulsimSPEC(10, 0.6, 0.1, 1600,

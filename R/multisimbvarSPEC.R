@@ -1,33 +1,45 @@
 
-#' Multiple Simple Neutral community (SN) simulations, plotting the RAC at specific timepoints and also saving the output matrix for every simulation
+
+
+#' Simulate multiple neutral communities with a variable birthrate (VBN) saving specific timepoints and also saving the output matrix for every simulation
+#'
+#'
 #'
 #'@param tmax Arbitrary units of time the simulation should be run
-#' @param b1 Birthrate
+#' @param b1 Normal birthrate
 #' @param d1 Deathrate
 #' @param k1 Carrying capacity
+#' @param bneck Birthrate during the bottleneck
+#' @param kneckstart Timepoint at which the bottleneck starts
+#' @param kneckend  Timepoint at which the bottleneck ends
 #' @param abun_original A vector of initial abundances for each species such as those created by generate_spat_abund
-#' @param nsim number of simulations that should be performed (integer)
 #' @param interval After how many evenst should the population state be saved to the output matrix
+#' @param nsim number of simulations that should be performed
 #' @param wantedtimes Specific timepoints for which the RAC is to be plotted
-#' @author Timo van Eldijk
-#'
+#'@author Timo van Eldijk
 #' @return this function plots the RAC of the simulations for the times specified in Wantedtimes as .tiff files in the current working directory also writes a .csv file outputting the poplation matrix for every simulation performed
 #' @export
 #'
-#' @examples
-#' multinulsimSPEC(10, 0.6, 0.1, 1600,
-#' generate_spat_abund(theta = 200,Ivec = rep(40,1),Jvec = c(16000)),
-#' 2, 200, c(15,30,50,75,100))
 #'
+#' @examples
+#' multisimbvarSPEC(10, 0.6, 0.1, 16000, 0.05, 0, 5,
+#' generate_spat_abund (theta = 200,Ivec = rep(40,1),Jvec = c(16000)),2,
+#' 200, c(15,30,50,75,100))
 #'
 #'
 
-multinulsimSPEC=function (tmax, b1, d1, k1, abun_original, nsim ,interval,wantedtimes){
+
+
+multisimbvarSPEC=function (tmax, b1, d1, k1, bneck,kneckstart, kneckend, abun_original, nsim, interval, wantedtimes){
 
   counter=1
   while(counter<=nsim){
     print (counter)
-    test=nulsimSPEC(tmax, b1, d1, k1, abun_original, interval, wantedtimes)
+
+    test=simbvarSPEC(tmax, b1, d1, k1, bneck,kneckstart, kneckend, abun_original, interval, wantedtimes)
+
+
+
     utils::write.csv(test, file = paste(counter, ".csv"))
     counter=counter+1
 
@@ -65,7 +77,7 @@ multinulsimSPEC=function (tmax, b1, d1, k1, abun_original, nsim ,interval,wanted
     }
 
 
-    grDevices::tiff(filename=paste(wantedtime,".tiff"), width = 1000, height = 1000, units = "px", pointsize = 32)
+   grDevices::tiff(filename=paste(wantedtime,".tiff"), width = 1000, height = 1000, units = "px", pointsize = 32)
     graphics::par(mfrow=c(1,1))
     graphics::plot(0 , xlab="Species Rank", ylab="Nr of individuals", ylim=c(1,10000), xlim=c(0,(length(abun_original))),log="y", pch = 20, cex = .8 )
 
@@ -80,11 +92,11 @@ multinulsimSPEC=function (tmax, b1, d1, k1, abun_original, nsim ,interval,wanted
     graphics::lines (1:length(vec2[vec2>0]), vec2[vec2>0], cex = .6, col="grey", lwd=2, lty=3)
     graphics::lines (1:length(vec4[vec4>0]), vec4[vec4>0], cex = .6, col="grey", lwd=2, lty=3)
     graphics::lines (1:length(vec3[vec3>0]),vec3[vec3>0], pch = 20, cex = .8, col="black", lwd=2)
-    graphics:: polygon(c((1:length(vec2[vec2>0])), rev(1:length(vec1[vec1>0]))), c(vec2[vec2>0], rev(vec1[vec1>0])),col=grDevices::gray(0.9))
-    graphics::polygon(c((1:length(vec5[vec5>0])), rev(1:length(vec4[vec4>0]))), c(vec5[vec5>0], rev(vec4[vec4>0])),col=grDevices::gray(0.9))
-    graphics:: polygon(c((1:length(vec3[vec3>0])), rev(1:length(vec2[vec2>0]))), c(vec3[vec3>0], rev(vec2[vec2>0])),col='lightblue')
-    graphics:: polygon(c((1:length(vec4[vec4>0])), rev(1:length(vec3[vec3>0]))), c(vec4[vec4>0], rev(vec3[vec3>0])),col="lightblue")
-    graphics:: points (1:ncol(racstor), newracstor[3,], pch = 20, cex = 0.8, col="black", lwd=2)
+    graphics::polygon(c((1:length(vec2[vec2>0])), rev(1:length(vec1[vec1>0]))), c(vec2[vec2>0], rev(vec1[vec1>0])),col= grDevices::gray(0.9))
+    graphics::polygon(c((1:length(vec5[vec5>0])), rev(1:length(vec4[vec4>0]))), c(vec5[vec5>0], rev(vec4[vec4>0])),col= grDevices::gray(0.9))
+    graphics::polygon(c((1:length(vec3[vec3>0])), rev(1:length(vec2[vec2>0]))), c(vec3[vec3>0], rev(vec2[vec2>0])),col='lightblue')
+    graphics::polygon(c((1:length(vec4[vec4>0])), rev(1:length(vec3[vec3>0]))), c(vec4[vec4>0], rev(vec3[vec3>0])),col="lightblue")
+    graphics::points (1:ncol(racstor), newracstor[3,], pch = 20, cex = 0.8, col="black", lwd=2)
     graphics::points(1:ncol(racstor), sort(abun_original, decreasing=T), col="Red", pch = 20, cex = .8)
 
 
@@ -96,6 +108,7 @@ multinulsimSPEC=function (tmax, b1, d1, k1, abun_original, nsim ,interval,wanted
 
 
   }
+
 
   #Trajectories
   grDevices::tiff(filename="Trajectory.tiff", width = 1000, height = 1000, units = "px", pointsize = 32)
@@ -116,10 +129,12 @@ multinulsimSPEC=function (tmax, b1, d1, k1, abun_original, nsim ,interval,wanted
     counter=counter+1
 
   }
-  grDevices::dev.off()
-
+  grDevices:: dev.off()
 
 
 
 }
+
+
+
 
